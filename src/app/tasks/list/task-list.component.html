@@ -1,0 +1,26 @@
+<main class="flex flex-col gap-3">
+    <section  class="border border-gray-100 rounded-md p-2">
+        @if(tasks.length == 0){
+            <p class="text-gray-500 flex justify-center">No tasks available. Please add a task.</p>
+        } @else{
+            <div class="flex justify-between p-2 items-center">
+                <!-- <p class="text-gray-500 bg-gray-100 rounded-xl px-4 py-1 text-sm"> {{tasks.length}} tasks: {{tasks.filter(t => t.done).length}} completed, {{tasks.filter(t => !t.done).length}} pending</p> -->
+            </div>
+            <ul class="flex flex-col gap-2 mt-3">
+                @for( todo of tasks; track todo.id){
+                    <li class="flex gap-3 justify-between items-start px-4 py-2 rounded-xl border border-gray-200" [class.bg-green-300]="todo.done" [appHighlight]="todo.done ? '#d4edda' : '#f8d7da'" >
+                        <div class="flex flex-col gap-2">
+                            <div class="flex gap-4">
+                                <input type="checkbox" (change)="toggleTodo(todo.id)" [checked]="todo.done" />
+                                <h1 type="text" class="text-lg cursor-pointer" (click)="openEditPage(todo.id)">{{todo.title}}</h1>
+                            </div>
+                            <p class="bg-transparent border-0 resize-none text-sm" >{{todo.description! | truncate:50}}</p>
+                        </div>
+                        <button (click) = "removeTasks(todo.id)" class="cursor-pointer"> ❌ </button>
+                    </li>
+                    
+                }
+            </ul>
+        }
+    </section>
+</main>
