@@ -8,20 +8,39 @@ export interface Task {
   done?: boolean;
 }
 
+
+/**
+ * Service responsible for managing tasks using localStorage.
+ */
 @Injectable({ providedIn: 'root' })
 export class TaskService {
 
   private STORAGE_KEY = 'tasks';
 
+  /**
+   * Returns all tasks from localStorage.
+   * @returns Observable of task array
+   */
   getTasks(): Observable<Task[]> {
     return of(this.getFromStorage());
   }
 
+  /**
+   * Returns a task by its id.
+   * @param id Task identifier
+   * @returns Observable of task or undefined
+   */
   getTaskById(id: number): Observable<Task | undefined> {
     const task = this.getFromStorage().find(t => t.id === id);
     return of(task);
   }
 
+  /**
+   * Adds a new task.
+   * @param title Task title
+   * @param description Task description
+   * @returns Updated task list
+   */
   addTask(title:string, description:string): Observable<Task[]> {
     const tasks = this.getFromStorage();
 
@@ -39,6 +58,11 @@ export class TaskService {
     return of(tasks);
   }
 
+  /**
+   * Removes a task.
+   * @param id Task identifier
+   * @returns Updated task list
+   */
   removeTask(id: number): Observable<Task[]> {
     let tasks = this.getFromStorage();
     tasks = tasks.filter(t => t.id !== id);
@@ -46,6 +70,11 @@ export class TaskService {
     return of(tasks);
   }
 
+  /**
+   * Toggles the done status of a task.
+   * @param id Task identifier
+   * @returns Updated task list
+   */
   toggleTaskDone(id: number): Observable<Task[]> {
     const tasks = this.getFromStorage();
     const taskIndex = tasks.findIndex(t => t.id === id);
@@ -56,6 +85,14 @@ export class TaskService {
     return of(tasks);
   }
 
+  /**
+   * Updates a task.
+   * @param id Task identifier
+   * @param title Task title
+   * @param description Task description
+   * @returns Updated task list
+   */
+
   editTask(id: number, newTitle: string, desc: string): Observable<Task[]> {
     const tasks = this.getFromStorage();
     const taskIndex = tasks.findIndex(t => t.id === id);
@@ -65,18 +102,24 @@ export class TaskService {
       this.saveToStorage(tasks);
     }
 
-    console.log(tasks[taskIndex]);
     return of(tasks);   
   }
 
 
 
-
+  /**
+   * Retrieves tasks from localStorage.
+   * @returns Task array
+   */
   private getFromStorage(): Task[] {
     
     return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
   }
 
+  /**
+   * Saves tasks to localStorage.
+   * @param tasks Task array
+   */
   private saveToStorage(tasks: Task[]): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tasks));
   }

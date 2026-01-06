@@ -3,6 +3,9 @@ import { Task, TaskService } from '../../core/services/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+/**
+ * Component for adding or editing a task.
+ */
 @Component({
   selector: 'app-upsert-task',
   templateUrl: './upsert-task.component.html',
@@ -12,6 +15,9 @@ import { ToastrService } from 'ngx-toastr';
 export class UpsertTaskComponent {
   constructor(private TaskService: TaskService, private router: Router, private route: ActivatedRoute, private toastr: ToastrService){}
 
+  /**
+   * The task being added or edited.
+   */
   task: Task = {
     id: 0,
     title: '',
@@ -20,6 +26,10 @@ export class UpsertTaskComponent {
   };
   isEditMode: boolean = false;
 
+  /**
+   * Initializes the component, checking if it's in edit mode.
+   * Fetches the task details if an ID is provided in the route parameters.
+   */
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
@@ -30,6 +40,11 @@ export class UpsertTaskComponent {
 
   }
 
+  /**
+   * Loads a task by its ID.
+   * @param id Task identifier
+   */
+
   loadTask(id: number): void {
   this.TaskService.getTaskById(id).subscribe(task => {
     if (task) {
@@ -38,6 +53,9 @@ export class UpsertTaskComponent {
   });
 }
 
+/**   
+ * Saves the task, either adding a new one or updating an existing one.
+*/
 saveTask(): void {
     if (this.isEditMode) {
       this.TaskService.editTask(this.task.id!, this.task.title!, this.task.description!).subscribe({
@@ -64,6 +82,11 @@ saveTask(): void {
     this.router.navigate(['/task']);
   }
 
+  /**
+   * Adds a new task.
+   * @param titleInput 
+   * @param descriptionInput 
+   */
   addTask(titleInput: string, descriptionInput: string): void {
     this.TaskService.addTask(titleInput, descriptionInput).subscribe();
   }

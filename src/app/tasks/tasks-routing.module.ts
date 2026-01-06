@@ -4,6 +4,9 @@ import { TaskListComponent } from './list/task-list.component';
 import { UpsertTaskComponent } from './upsert/upsert-task.component';
 import { AuthGuard } from '../auth/auth.guard';
 
+/**
+ * Routing module for task-related routes.
+ */
 const routes: Routes = [
   { path: '', component: TaskListComponent,  canActivate: [AuthGuard] },
   { path: 'add', component: UpsertTaskComponent ,  canActivate: [AuthGuard]},

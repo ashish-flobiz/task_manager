@@ -11,6 +11,9 @@ export class App implements OnInit {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Initializes the application by making a test HTTP request.
+   */
   ngOnInit(): void {
     this.http.get('https://jsonplaceholder.typicode.com/todos/1').subscribe(res => console.log(res));
   }
